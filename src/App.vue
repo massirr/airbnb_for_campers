@@ -17,7 +17,7 @@
         NavBar
       },
       methods: {
-        setActivePage(page) { // the word page comes from navbar
+        setActivePage(page) { // the word page comes from NavBarComp
           this.activePage = page;
         }
       }

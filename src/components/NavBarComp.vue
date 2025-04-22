@@ -2,14 +2,14 @@
     import logo from '@/assets/image/tent.png'; // @ alias for src folder
 
     export default {
-      name: "NavigationComponent",
+      name: "NavBarComp",
       data() {
         return {
           items: [
             "home",
             "account"
           ],
-          logo: logo
+          logo
         }
       },
       methods: {
@@ -48,9 +48,7 @@
                     class="text-black hover:bg-green-900 hover:text-white rounded-md px-3 py-2" 
                     placeholder="Search...">
               </div>
-
             </div>
-            <a class="absolute right-10 text-white hover:bg-green-900 hover:text-white rounded-md px-3 py-2"> account </a>
           </div>
         </div>
       </div>
