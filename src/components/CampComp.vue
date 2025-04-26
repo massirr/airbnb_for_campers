@@ -1,34 +1,43 @@
 <script>
 
+  export default{
+    name: 'CampComp',
+    props: {
+      camp: String,
+    }
+  }
+
 </script>
 
 <template>
-    <section class="py-4">
-      <div class="container-xl lg:container m-auto ">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 rounded-lg ">
-          <div class="bg-gray-300 p-6 rounded-lg shadow-md">
-            <h2 class="text-2xl font-bold">camp name</h2>
-            <p class="mt-2 mb-4">
-              Description
-            </p>
-            <a
-              class="inline-block bg-black text-white rounded-lg px-4 py-2 hover:bg-gray-700"
-            >
-              Book Camp
-            </a>
+    <div class="bg-white rounded-xl shadow-md relative">
+      <div class="p-4">
+        <div class="mb-6">
+          <div class="text-gray-600 my-2">{{camp}}</div>
+            <h3 class="text-xl font-bold">Front-End Engineer (Vue)</h3>
+        </div>
+
+        <div class="mb-5">
+          Join our team as a Front-End Developer in sunny Miami, FL. We
+          are looking for a motivated individual with a passion...
+        </div>
+
+        <h3 class="text-green-500 mb-2">$70K - $80K / Year</h3>
+
+        <div class="border border-gray-100 mb-5"></div>
+
+        <div class="flex flex-col lg:flex-row justify-between mb-4">
+          <div class="text-orange-700 mb-3">
+            <i class="pi pi-map-marker text-orange-700"></i>
+              Miami, FL
           </div>
-          <div class="bg-green-200 p-6 rounded-lg shadow-md">
-            <h2 class="text-2xl font-bold">camp name2</h2>
-            <p class="mt-2 mb-4">
-                Description
-            </p>
-            <a
-              class="inline-block bg-green-500 text-white rounded-lg px-4 py-2 hover:bg-green-600"
-            >
-            Book Camp2
-            </a>
-          </div>
+          <button
+            href="job.html"
+            class="h-[36px] bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg text-center text-sm"
+          >
+            Book Camp
+          </button>
         </div>
       </div>
-    </section>
+    </div>
 </template>

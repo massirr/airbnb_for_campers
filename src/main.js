@@ -1,7 +1,9 @@
-import Vue from 'vue'
-import App from './App.vue'
-import './assets/tailwind.css'
+import Vue from 'vue';
+import App from './App.vue';
+import './assets/tailwind.css';
 import 'leaflet/dist/leaflet.css';
+import 'primeicons/primeicons.css';
+
 
 Vue.config.productionTip = false
 

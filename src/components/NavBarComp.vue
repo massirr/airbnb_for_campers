@@ -3,11 +3,15 @@
 
     export default {
       name: "NavBarComp",
+      props: {
+        activePage: String
+      },
       data() {
         return {
           items: [
-            "home",
-            "account"
+            "Account",
+            "Camps",
+            "Home"
           ],
           logo
         }
@@ -27,9 +31,8 @@
           <div
             class="flex flex-1 items-center justify-center md:items-stretch md:justify-start">
 
-            <!-- Logo -->
             <a class="flex flex-shrink-0 items-center mr-4">
-              <img class="h-10 w-auto" :src="logo"/>
+              <img class="h-10 w-auto" :src="logo"/> <!-- Logo -->
               <span class="hidden md:block text-white text-2xl font-bold ml-2"
                 >AirBnb For Campers</span>
             </a>
@@ -39,7 +42,13 @@
                   v-for="(item, index) in items"
                   :key="index"
                   @click="setActivePage(item)"
-                  class="text-white bg-green-900 hover:bg-gray-900 hover:text-white rounded-md px-3 py-2"
+                  :class="[
+                    'text-white',
+                    'rounded-md',
+                    'px-3',
+                    'py-2',
+                    activePage === item ? 'bg-green-900' : 'hover:bg-gray-900 hover:text-white' // if the activepage is the item, give it the colors else give it the default
+                  ]"
                   >
                   {{item}}
                 </button>
