@@ -1,13 +1,18 @@
 <script>
   import Camp from '@/components/CampComp.vue';
+  import Dropdown from '@/components/DropdownComp.vue';
 
   export default{
     name: 'campsPage',
     props: {
       limit: Number, // again, from parent to this child
-      showButton: { // the view all jobs is set to not show by default
+      showButton: { // the view all Camps is set to not show by default
         type: Boolean,
         default: false
+      },
+      showDropdown: { // the view all Camps is set to not show by default
+        type: Boolean,
+        default: true
       },
       title:  {
         type: String,
@@ -20,7 +25,8 @@
       }
     },
     components: {
-      Camp
+      Camp,
+      Dropdown
     }
   }
 </script>
@@ -31,6 +37,7 @@
       <h2 class="text-3xl font-bold •text-green-500 mb-6 text-center">
         {{title}}
       </h2>
+      <Dropdown v-if="showDropdown"/>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <Camp v-for="(camp, index) in camps.slice(0, limit || camps.length)" :key="index" :camp="camp"/> <!--camp is passed to the child as a prop -->
       </div>

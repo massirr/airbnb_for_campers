@@ -9,9 +9,8 @@
       data() {
         return {
           items: [
-            "Account",
+            "Bookings",
             "Camps",
-            "Home"
           ],
           logo
         }
@@ -31,11 +30,13 @@
           <div
             class="flex flex-1 items-center justify-center md:items-stretch md:justify-start">
 
-            <a class="flex flex-shrink-0 items-center mr-4">
+            <div class="flex flex-shrink-0 items-center mr-4">
               <img class="h-10 w-auto" :src="logo"/> <!-- Logo -->
-              <span class="hidden md:block text-white text-2xl font-bold ml-2"
-                >AirBnb For Campers</span>
-            </a>
+              <button class="hidden md:block text-white text-2xl font-bold ml-2" 
+                @click="setActivePage('Home')"
+                >AirBnb For Campers
+              </button>
+            </div>
             <div class="md:ml-auto">
               <div class="flex space-x-2">
                 <button                  
@@ -59,6 +60,15 @@
               </div>
             </div>
           </div>
+          
+          <!--Account-->
+          <a 
+            class="absolute right-10 text-white 
+                  hover:bg-green-900 hover:text-white 
+                  rounded-full px-3 py-2 pi pi-user" 
+                  style="font-size: 1.3rem" 
+          >
+          </a>
         </div>
       </div>
     </nav>

@@ -9,9 +9,10 @@
     <div class="bg-gray-200"> <!-- a map has to be shown in this page -->
       <Hero/>
       <MapComp/>
-      <Camps :limit="3" :showButton="true" 
+      <Camps :limit="3" :showButton="true" :showDropdown="false"
             @setActivePage="$emit('setActivePage', $event)"
             :title="'Camps'"
-      /> <!-- $event is the payload that came from the $emit() call. -->
+      /> <!-- $event is the payload that came from the $emit() call. from campsPage to out-->
+          <!-- the "View all Camps" will show but "the Dropdown doesn't"-->
     </div> 
 </template>
