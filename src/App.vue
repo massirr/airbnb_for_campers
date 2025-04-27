@@ -1,7 +1,7 @@
 <script>
-    import NavBar from '@/components/NavBarComp.vue';
+    import NavBar from '@/components/NavbarComp.vue';
 
-    import Bookings from '@/pages/bookingPage.vue';
+    import Account from '@/pages/accountPage.vue';
     import Camps from '@/pages/campsPage.vue';
     import Home from '@/pages/homePage.vue';
     
@@ -13,7 +13,7 @@
         }
       },
       components: {
-        Bookings,
+        Account,
         Camps,
         Home,
         NavBar
@@ -32,7 +32,7 @@
     <NavBar @setActivePage="setActivePage" :activePage="activePage"/> <!--send the active page data as a prop-->
 
     <!--pages-->
-    <Bookings v-if="activePage == 'Bookings'"/>
+    <Account v-if="activePage == 'Account'"/>
     <Camps v-if="activePage == 'Camps'"/>
     <Home v-if="activePage == 'Home'" @setActivePage="setActivePage"/>
   </div>

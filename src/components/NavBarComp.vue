@@ -2,14 +2,13 @@
     import logo from '@/assets/image/tent.png'; // @ alias for src folder
 
     export default {
-      name: "NavBarComp",
+      name: "NavbarComp",
       props: {
         activePage: String
       },
       data() {
         return {
           items: [
-            "Bookings",
             "Camps",
           ],
           logo
@@ -38,21 +37,35 @@
               </button>
             </div>
             <div class="md:ml-auto">
-              <div class="flex space-x-2">
+              <div class="flex space-x-2 absolute right-10">
                 <button                  
-                  v-for="(item, index) in items"
+                  v-for="(item, index) in items /* only one item but could add more */ " 
                   :key="index"
                   @click="setActivePage(item)"
-                  :class="[
-                    'text-white',
-                    'rounded-md',
-                    'px-3',
-                    'py-2',
-                    activePage === item ? 'bg-green-900' : 'hover:bg-gray-900 hover:text-white' // if the activepage is the item, give it the colors else give it the default
-                  ]"
+                  :class="[ 'text-white rounded-md px-3 py-2',
+                          activePage === item ? 'bg-green-900' : 'hover:bg-gray-900 hover:text-white' // if the activepage is the item, give it the colors else give it the default
+                        ]"
                   >
                   {{item}}
                 </button>
+
+                <!--Bookings-->
+                <a
+                  @click="setActivePage('Bookings')"
+                  :class=" ['text-white hover:bg-gray-900 hover:text-white rounded-full px-3 py-2 pi pi-cart-arrow-down',
+                        activePage === 'Bookings' ? 'bg-green-900' : 'hover:bg-gray-90'] " 
+                        style="font-size: 1.5rem"
+                ></a> 
+      
+                <!--Account-->
+                <a
+                  @click="setActivePage('Account')"
+                  :class=" ['text-white hover:bg-gray-900 hover:text-white rounded-full px-3 py-2 pi pi-user',
+                        activePage === 'Account' ? 'bg-green-900' : 'hover:bg-gray-90'] " 
+                        style="font-size: 1.3rem" 
+                ></a>
+
+                <!--Search-->
                 <input 
                     type="text"
                     class="text-black hover:bg-green-900 hover:text-white rounded-md px-3 py-2" 
@@ -60,15 +73,7 @@
               </div>
             </div>
           </div>
-          
-          <!--Account-->
-          <a 
-            class="absolute right-10 text-white 
-                  hover:bg-green-900 hover:text-white 
-                  rounded-full px-3 py-2 pi pi-user" 
-                  style="font-size: 1.3rem" 
-          >
-          </a>
+
         </div>
       </div>
     </nav>
