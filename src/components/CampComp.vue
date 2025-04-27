@@ -4,6 +4,30 @@
     name: 'CampComp',
     props: {
       camp: String,
+      bookedState: Array, // we expect an array of items
+    },
+    mounted() {
+      // Check if the camp is already booked when the component is mounted
+      this.checkIfBooked();
+    },
+    data() {
+        return {
+          bookedCamps: null,
+          isBooked: false  // track state of Book Camp button
+        }
+      },
+    methods:{
+      checkIfBooked() {
+        // Check if the current camp is in the bookedState array return boolean
+        const booked = this.bookedState.some(
+          (item) => item === this.camp //  objects have items(the name)
+        );
+        this.isBooked = booked;
+      },
+      bookCamp(camp) {
+        this.$emit("booked", camp); // from Camp to camps to app then binded to bookings
+        this.isBooked = true
+      }
     }
   }
 
@@ -32,9 +56,14 @@
               Miami, FL
           </div>
           <button
-            class="h-[36px] bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg text-center text-sm"
+            @click="bookCamp(camp)"
+            :disabled="isBooked"
+            :class="[
+              'h-[36px] text-white px-4 py-2 rounded-lg text-center text-sm',
+              isBooked ? 'bg-gray-400 cursor-not-allowed' : 'bg-green-500 hover:bg-green-600'
+            ]"
           >
-            Book Camp
+            {{ isBooked ? 'Booked' : 'Book Camp' }} <!--if true show Booked else you can Book-->
           </button>
         </div>
       </div>

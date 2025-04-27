@@ -5,7 +5,7 @@
   export default{
     name: 'campsPage',
     props: {
-      limit: Number, // again, from parent to this child
+      limit: Number, // again, from parent to this child, the number of camps to show
       showButton: { // the view all Camps is set to not show by default
         type: Boolean,
         default: false
@@ -17,7 +17,8 @@
       title:  {
         type: String,
         default: 'Browse Camps'
-      }
+      },
+      bookedState: null
     },
     data() {
       return { // fetch the camp details
@@ -39,7 +40,9 @@
       </h2>
       <Dropdown v-if="showDropdown"/>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Camp v-for="(camp, index) in camps.slice(0, limit || camps.length)" :key="index" :camp="camp"/> <!--camp is passed to the child as a prop -->
+        <Camp v-for="(camp, index) in camps.slice(0, limit || camps.length)" 
+              :key="index" :camp="camp" @booked="$emit('booked', $event)"
+              :bookedState="bookedState"/> <!--camp is passed to the child as a prop while booked is emitted-->
       </div>
     </div> 
 

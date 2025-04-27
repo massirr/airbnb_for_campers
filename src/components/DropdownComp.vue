@@ -33,7 +33,7 @@
           <i v-if="!open[dropdownindex] && !selected[dropdownindex]" class="pi pi-chevron-down px-3 py-2"></i>
         </button>
 
-        <div v-if="open[dropdownindex]" class="absolute z-10 w-[200px] bg-white border border-black mt-1 py-2 rounded-md">
+        <div v-if="open[dropdownindex]" class="absolute z-10 w-[190px] bg-white border border-black mt-1 py-2 rounded-md">
           <div v-for="option in options" :key="option"
                @click="selectOption(dropdownindex, option)"
                class="px-3 py-2 hover:bg-gray-300 cursor-pointer rounded-md">
