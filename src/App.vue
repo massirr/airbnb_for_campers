@@ -10,7 +10,7 @@
       name: 'App',
       data() {
         return {
-          activePage: "Camps",
+          activePage: "Home",
           bookedItems: [], // to pass to the bookings page
           bookedState: []
         }
