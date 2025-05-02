@@ -42,7 +42,7 @@
 
 <!--for tailwind@3 to work, you need tailwind.css in assets, postcss.config.js and tailwind.config.js -> make sure you know the version you are working with-->
 <template>
-  <div id="app">
+  <div>
     <NavBar @setActivePage="setActivePage" :activePage="activePage"/> <!--send the active page data as a prop-->
 
     <!--pages-->
