@@ -18,7 +18,7 @@ export default {
   methods: {
     // Sets up the map view with default coordinates and adds the tile layer
     initMap() {
-      // Referring to the ID of the HTML element where the map will be rendered.
+      // L.map() Referring to the ID of the HTML element where the map will be rendered.
       this.map = L.map('map').setView([50.85, 4.3517], 13); // Default coordinates [lat, lon] and zoom level
 
       // The tile layer makes the map actually visible
@@ -64,11 +64,5 @@ export default {
   <div>
     <!-- This is where the map will be displayed -->
     <div id="map" class="h-[400px] w-full rounded-lg shadow-lg"></div>
-
-    <!-- Displaying fetched coordinates for debug or reference -->
-    <div class="text-black text-center mt-2">
-      Coordinates: {{ code?.lat }}, {{ code?.lon }}
-      map: {{ map }}
-    </div>
   </div>
 </template>
