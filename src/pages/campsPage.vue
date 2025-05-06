@@ -10,7 +10,7 @@
         type: Boolean,
         default: false
       },
-      showDropdown: { // the view all Camps is set to not show by default
+      showDropdown: { // the dropdown is set to show by default
         type: Boolean,
         default: true
       },
@@ -20,14 +20,32 @@
       },
       bookedState: null
     },
+    mounted() {
+      this.getCamps()
+    },
     data() {
       return { // fetch the camp details
-        camps: ['1','2','3','4','5','6']
+        camps: null
       }
     },
     components: {
       Camp,
       Dropdown
+    },
+    methods: {
+      getCamps() {
+        fetch("http://localhost:3000/camps", {
+          method: "GET"
+        })
+            .then((response) => response.json())
+            .then((_camps) => {
+              this.camps = _camps
+              console.log(this.camps)
+            })
+            .catch((error) => {
+              console.error("Error fetching camps:", error); // Handle errors
+            });
+      }
     }
   }
 </script>
@@ -39,10 +57,14 @@
         {{title}}
       </h2>
       <Dropdown v-if="showDropdown"/>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div v-if="camps" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!--Only render the Camp components if camps is not null-->
+        <!--limiting the number of items displayed based on the limit prop-->
         <Camp v-for="(camp, index) in camps.slice(0, limit || camps.length)" 
-              :key="index" :camp="camp" @booked="$emit('booked', $event)"
-              :bookedState="bookedState"/> <!--camp is passed to the child as a prop while booked is emitted-->
+              :key="index"
+              :camp="camp" 
+              @booked="$emit('booked', $event)"
+              :bookedState="bookedState"/> <!--camp is passed to the child as a prop while booked is emitted to the parent-->
       </div>
     </div> 
 

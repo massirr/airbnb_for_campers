@@ -40,7 +40,7 @@
             <div class="md:ml-auto">
               <div class="flex space-x-2 absolute right-10">
                 <button                  
-                  v-for="(item, index) in items /* only one item but could add more */ " 
+                  v-for="(item, index) in items /* only two item but could add more */ " 
                   :key="index"
                   @click="setActivePage(item)"
                   :class="[ 'text-white rounded-md px-3 py-2',

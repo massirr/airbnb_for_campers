@@ -21,7 +21,7 @@ export default {
       // L.map() Referring to the ID of the HTML element where the map will be rendered.
       this.map = L.map('map').setView([50.85, 4.3517], 13); // Default coordinates [lat, lon] and zoom level
 
-      // The tile layer makes the map actually visible
+      // The tile layer makes the map visible
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; OpenStreetMap contributors'
       }).addTo(this.map);
@@ -29,7 +29,7 @@ export default {
 
     // Fetches the coordinates from the backend and adds a marker with a popup
     getlatlong() {
-      fetch("http://localhost:3000/camps", {
+      fetch("http://localhost:3000/latlon", { 
         method: "GET"
       })
         .then((response) => response.json())

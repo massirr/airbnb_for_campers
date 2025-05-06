@@ -3,7 +3,7 @@
   export default{
     name: 'CampComp',
     props: {
-      camp: String,
+      camp: Object,
       bookedState: Array, // we expect an array of items
     },
     mounted() {
@@ -15,14 +15,16 @@
           bookedCamps: null,
           isBooked: false  // track state of Book Camp button
         }
-      },
+    },
     methods:{
       checkIfBooked() {
         // Check if the current camp is in the bookedState array return boolean
-        const booked = this.bookedState.some(
-          (item) => item === this.camp //  objects have items(the name)
-        );
-        this.isBooked = booked;
+        if(this.bookedState) {
+          const booked = this.bookedState.some(
+            (item) => item === this.camp //  objects have items(the name)
+          );
+          this.isBooked = booked;          
+        }
       },
       bookCamp(camp) {
         this.$emit("booked", camp); // from Camp to camps to app then binded to bookings
@@ -37,16 +39,14 @@
     <div class="bg-white rounded-xl shadow-md relative">
       <div class="p-4">
         <div class="mb-6">
-          <div class="text-gray-600 my-2">{{camp}}</div>
-            <h3 class="text-xl font-bold">Front-End Engineer (Vue)</h3>
+            <h3 class="text-xl font-bold">{{camp.name}}</h3>
         </div>
 
         <div class="mb-5">
-          Join our team as a Front-End Developer in sunny Miami, FL. We
-          are looking for a motivated individual with a passion...
+          {{camp.description}}
         </div>
 
-        <h3 class="text-green-500 mb-2">$70K - $80K / Year</h3>
+        <h3 class="text-green-400 mb-2">${{camp.price}}</h3>
 
         <div class="border border-gray-100 mb-5"></div>
 

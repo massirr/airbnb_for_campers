@@ -1,4 +1,16 @@
 <script>
+      export default {
+      name: "NavbarComp",
+      data() {
+        return {
+          items: [
+            { label: "Username", type: "text", placeholder: "Enter your username" },
+            { label: "Email", type: "email", placeholder: "Enter your email" },
+            { label: "Password", type: "password", placeholder: "*******" },
+          ],
+        }
+      }
+    }
 </script>
 
 <template>
@@ -7,22 +19,13 @@
         <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">Sign In</h2>
         
         <form class="space-y-4">
-          <div>
-            <label class="block text-sm font-medium text-gray-700">Email</label>
-            <!--browsers automatically apply validation rules specific to email addresses with type="email"-->
+          <div v-for="(item, index) in items" :key="index">
+            <label class="block text-sm font-medium text-gray-700">{{ item.label }}</label>
+            <!--browsers automatically apply validation rules specific to email addresses with type="email", for passwords too-->
             <input 
-              type="email"
+              :type="item.type"
+              :placeholder="item.placeholder"
               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:border-green-500"
-              placeholder="your@email.com"
-            />
-          </div>
-
-          <div>
-            <label class="block text-sm font-medium text-gray-700 ">Password</label>
-            <input 
-              type="password" 
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg"
-              placeholder="••••••••"
             />
           </div>
 
