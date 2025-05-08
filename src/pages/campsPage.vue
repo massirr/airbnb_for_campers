@@ -18,7 +18,7 @@
         type: String,
         default: 'Browse Camps'
       },
-      bookedState: null
+      bookedState: Array
     },
     mounted() {
       this.getCamps()
@@ -40,7 +40,7 @@
             .then((response) => response.json())
             .then((_camps) => {
               this.camps = _camps
-              console.log(this.camps)
+              //console.log(this.camps)
             })
             .catch((error) => {
               console.error("Error fetching camps:", error); // Handle errors
