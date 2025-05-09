@@ -63,13 +63,13 @@
         <Camp v-for="(_camp, index) in camps.slice(0, limit || camps.length)" 
               :key="index"
               :camp="_camp" 
-              @booked="$emit('booked', $event)"/>
+              @setActivePage="$emit('setActivePage', $event)"/>
       </div>
     </div> 
 
     <div v-if="showButton" class="flex justify-center my-10">
       <button
-        @click="$emit('setActivePage', 'Camps')"
+        @click="$emit('setActivePage', 'Camp')"
         class="block bg-black text-white text-center py-4 w-full max-w-xl rounded-xl hover:bg-gray-700"
       >
         View All Camps

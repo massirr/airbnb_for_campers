@@ -7,7 +7,7 @@
 
 <template>
     <div class="bg-gray-200"> <!-- a map has to be shown in this page -->
-      <Hero/>
+      <Hero @setCampPage="$emit('setCampPage', $event)"/>
       <MapComp/>
       <!-- the "View all Camps button" will show but "the Dropdown doesn't"-->
       <Camps :limit="3" :showButton="true" :showDropdown="false"
