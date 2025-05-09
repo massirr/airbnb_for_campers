@@ -10,9 +10,7 @@
       name: 'App',
       data() {
         return {
-          activePage: "Home",
-          bookedItems: [], // to pass to the bookings page
-          bookedState: []
+          activePage: "Camps",
         }
       },
       components: {
@@ -26,16 +24,6 @@
         setActivePage(page) { // the word page comes from NavBarComp
           this.activePage = page;
         },
-        handleBooked(item) {
-          if (!this.bookedItems.includes(item)) {
-            this.bookedItems.push(item)
-          }// adding the booked camp in the array --> don't forget to change if an object.
-        },
-        handleState(item) {
-          if (!this.bookedState.includes(item)) { // if object, use different method
-            this.bookedState.push(item)
-          }
-        },
       }
     }
 </script>
@@ -47,8 +35,8 @@
 
     <!--pages-->
     <Account v-if="activePage == 'Account'"/>
-    <Bookings v-if="activePage == 'Bookings'" @bookedState="handleState" :bookedItems="bookedItems"/>
-    <Camps v-if="activePage == 'Camps'" @booked="handleBooked" :bookedState="bookedState"/> <!--the booked item is handled here and taken to booking as a prop the state is binded to the prop in Camps-->
+    <Bookings v-if="activePage == 'Bookings'"/>
+    <Camps v-if="activePage == 'Camps'"/>
     <Home v-if="activePage == 'Home'" @setActivePage="setActivePage"/> <!--View all camps is only active on the home page-->
   </div>
 </template>

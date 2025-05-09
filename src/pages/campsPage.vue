@@ -24,7 +24,7 @@
       this.getCamps()
     },
     data() {
-      return { // fetch the camp details
+      return { // fetched camp details
         camps: null
       }
     },
@@ -60,21 +60,20 @@
       <div v-if="camps" class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <!--Only render the Camp components if camps is not null-->
         <!--limiting the number of items displayed based on the limit prop-->
-        <Camp v-for="(camp, index) in camps.slice(0, limit || camps.length)" 
+        <Camp v-for="(_camp, index) in camps.slice(0, limit || camps.length)" 
               :key="index"
-              :camp="camp" 
-              @booked="$emit('booked', $event)"
-              :bookedState="bookedState"/> <!--camp is passed to the child as a prop while booked is emitted to the parent-->
+              :camp="_camp" 
+              @booked="$emit('booked', $event)"/>
       </div>
     </div> 
 
-    <div v-if="showButton" class="m-auto max-w-lg my-10 px-6">
-      <a
+    <div v-if="showButton" class="flex justify-center my-10">
+      <button
         @click="$emit('setActivePage', 'Camps')"
-        class="block bg-black text-white text-center py-4 px-6 rounded-xl hover:bg-gray-700"
-        >
+        class="block bg-black text-white text-center py-4 w-full max-w-xl rounded-xl hover:bg-gray-700"
+      >
         View All Camps
-      </a>
+      </button>
     </div>
   </section>
 </template>

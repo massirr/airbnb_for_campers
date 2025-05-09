@@ -1,30 +1,29 @@
 <script>
     export default {
       name: "bookingsPage",
-      props: {
-        bookedItems: Array,
-        cancelBooking: {
-          type: Boolean,
-          default: false
+      data() {
+        return {
+          bookedCamps: null
         }
       },
       mounted() {
-        if (this.bookedItems) {
-          this.bookedItems.forEach((item) => {
-            this.changeState(item.name);
-          });
-        }
+        this.getCamps()
       },
       methods: {
-        changeState(name) {
-          if (!this.cancelBooking) {
-            this.$emit("bookedState", name); // Emit the bookedState event
-          } else {
-            // Emit an event to the parent to remove the item
-            console.log(name);
-          }
-        },
-      },
+        getCamps() {
+        fetch("http://localhost:3000/camps/spots?bookable=false", {
+          method: "GET"
+        })
+            .then((response) => response.json())
+            .then((_camps) => {
+              this.bookedCamps = _camps
+              //console.log(this.bookedCamps)
+            })
+            .catch((error) => {
+              console.error("Error fetching camps:", error); // Handle errors
+            });
+        }
+      }
     };
 </script>
 
@@ -34,23 +33,22 @@
       Your Booked Camps
     </h2>
     <div
-      v-if="bookedItems && bookedItems.length > 0"
+      v-if="bookedCamps && bookedCamps.length > 0"
       class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-6xl"
     >
       <div
-        v-for="(item, index) in bookedItems"
+        v-for="(camp, index) in bookedCamps"
         :key="index"
         class="bg-white rounded-xl shadow-md p-6 flex flex-col justify-between"
       >
-        <h3 class="text-xl font-bold text-gray-900 mb-4">{{ item.name }}</h3>
+        <h3 class="text-xl font-bold text-gray-900 mb-4">{{ camp.name }}</h3>
         <p class="text-gray-700 mb-2">
-          <span class="font-semibold">Price:</span> ${{ item.price }}
+          <span class="font-semibold">Price:</span> ${{ camp.price }}
         </p>
         <p class="text-gray-700 mb-4">
-          <span class="font-semibold">Location:</span> {{ item.city }}, Bel
+          <span class="font-semibold">Location:</span> {{ camp.city }}, Bel
         </p>
         <button
-          @click="changeState(item.name)"
           class="bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-4 rounded-lg transition-colors"
         >
           Cancel Booking

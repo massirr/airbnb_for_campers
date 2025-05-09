@@ -34,7 +34,7 @@
               <input type="checkbox" class="accent-gray-300"/>
               <span class="ml-2 text-sm text-gray-600">Remember me</span>
             </label>
-            <a class="text-sm text-green-500 mb-2 hover:text-green-600">Forgot password?</a>
+            <button class="text-sm text-green-500 mb-2 hover:text-green-600">Forgot password?</button>
           </div>
 
           <button class="w-full bg-green-500 hover:bg-green-600 text-white font-medium py-2.5 rounded-lg transition-colors">
@@ -44,7 +44,7 @@
 
         <div class="mt-6 text-center text-sm text-gray-600">
           Don't have an account? 
-          <a class="text-green-500 hover:text-green-600 font-medium">Sign up</a>
+          <button class="text-green-500 hover:text-green-600 font-medium">Sign up</button>
         </div>
       </div>
     </div>

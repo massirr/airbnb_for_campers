@@ -50,21 +50,25 @@
                   {{item}}
                 </button>
 
-                <!--Bookings-->
-                <a
+                <!-- Bookings -->
+                <button
                   @click="setActivePage('Bookings')"
-                  :class=" ['text-white hover:bg-gray-900 hover:text-white rounded-full px-3 py-2 pi pi-cart-arrow-down',
-                        activePage === 'Bookings' ? 'bg-green-900' : 'hover:bg-gray-90'] " 
-                        style="font-size: 1.5rem"
-                ></a> 
-      
-                <!--Account-->
-                <a
+                  :class="[
+                    'text-white hover:bg-gray-900 hover:text-white rounded-full px-3 py-2 pi pi-cart-arrow-down',
+                    activePage === 'Bookings' ? 'bg-green-900' : 'hover:bg-gray-90'
+                  ]"
+                  style="font-size: 1.5rem"
+                ></button>
+                
+                <!-- Account -->
+                <button
                   @click="setActivePage('Account')"
-                  :class=" ['text-white hover:bg-gray-900 hover:text-white rounded-full px-3 py-2 pi pi-user',
-                        activePage === 'Account' ? 'bg-green-900' : 'hover:bg-gray-90'] " 
-                        style="font-size: 1.3rem" 
-                ></a>
+                  :class="[
+                    'text-white hover:bg-gray-900 hover:text-white rounded-full px-3 py-2 pi pi-user',
+                    activePage === 'Account' ? 'bg-green-900' : 'hover:bg-gray-90'
+                  ]"
+                  style="font-size: 1.3rem"
+                ></button>
 
                 <!--Search-->
                 <input 
