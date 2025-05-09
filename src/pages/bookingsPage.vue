@@ -22,7 +22,25 @@
             .catch((error) => {
               console.error("Error fetching camps:", error); // Handle errors
             });
-        }
+        },
+        cancelBooking(spotID) {
+        fetch(`http://localhost:3000/camps/spots/${spotID}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ bookable: "true" }) // Send bookable as a string like in postman
+        })
+          .then((response) => response.json())
+          .then(() => {
+            if(this.bookedCamps){
+              this.getCamps(); // update the local state to reflect the change
+            }
+          })
+          .catch((error) => {
+            console.error("Error updating camp status:", error);
+          });
+      }
       }
     };
 </script>
@@ -49,6 +67,7 @@
           <span class="font-semibold">Location:</span> {{ camp.city }}, Bel
         </p>
         <button
+          @click="cancelBooking(camp.spotID)"
           class="bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-4 rounded-lg transition-colors"
         >
           Cancel Booking

@@ -9,7 +9,7 @@
     },
     data() {
         return {
-          bookable: this.camp.bookable  // tprops are passed to the component and should be accessed using this.camp.
+          bookable: this.camp.bookable 
         }
     },
     computed: {
@@ -22,10 +22,23 @@
     },
     methods:{
       bookCamp(spotID) {
-        console.log(`Booking ${spotID}`)
+        fetch(`http://localhost:3000/camps/spots/${spotID}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ bookable: "false" }) // Send bookable as a string like in postman
+        })
+          .then((response) => response.json())
+          .then((updatedSpot) => {
+            this.bookable = updatedSpot.bookable; // update the local state to reflect the change
+          })
+          .catch((error) => {
+            console.error("Error updating camp status:", error);
+          });
       }
-      },
-    }
+    },
+  }
 
 </script>
 
