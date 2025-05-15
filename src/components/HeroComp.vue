@@ -1,11 +1,16 @@
 <script>
-export default {
-  name: "HeroComp",
-};
+
+  export default {
+    name: "HeroComp",
+    data() {
+      return {
+      }
+    }
+  };
 </script>
 
 <template>
-  <section class="relative bg-gradient-to-br from-green-100 to-blue-100 py-24 mb-4">
+  <section class="relative bg-cover bg-center py-24 mb-4">
     <div class="max-w-6xl mx-auto px-6 text-center">
       <!-- Title -->
       <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold text-gray-900 leading-tight">

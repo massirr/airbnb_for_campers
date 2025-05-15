@@ -69,7 +69,7 @@
 
     <div v-if="showButton" class="flex justify-center my-10">
       <button
-        @click="$emit('setActivePage', 'Camp')"
+        @click="$emit('setActivePage', 'Camps')"
         class="block bg-black text-white text-center py-4 w-full max-w-xl rounded-xl hover:bg-gray-700"
       >
         View All Camps

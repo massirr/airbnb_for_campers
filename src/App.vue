@@ -6,7 +6,7 @@
     import Camps from '@/pages/campsPage.vue';
     import CampInfo from '@/pages/campInfoPage.vue';
     import Home from '@/pages/homePage.vue';
-    
+
     export default {
       name: 'App',
       data() {
@@ -20,7 +20,7 @@
         Camps,
         CampInfo,
         Home,
-        NavBar
+        NavBar,
       },
       methods: {
         setActivePage(page) { // the word page comes from NavBarComp

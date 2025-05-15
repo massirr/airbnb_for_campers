@@ -3,12 +3,33 @@ export default {
   name: "SigninComp",
   data() {
     return {
-      items: [
-        { label: "Username", type: "text", placeholder: "Enter your username" },
-        { label: "Email", type: "email", placeholder: "Enter your email" },
-        { label: "Password", type: "password", placeholder: "*******" },
-      ],
+      identifier: '', // can be email or username
+      password: '',
+      error: '',
     };
+  },
+  methods: {
+    async handleLogin() {
+      try {
+        this.error = ""; // Clear previous error at start
+        const res = await fetch('http://localhost:3000/api/auth/signin', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ identifier: this.identifier, password: this.password }),
+        });
+  
+        const data = await res.json();
+  
+        if (!res.ok) throw new Error(data.message || 'Login failed');
+  
+        localStorage.setItem('token', data.token);
+        this.$emit('setActiveComp', 'Details');
+      } catch (err) {
+        this.error = err.message;
+        this.identifier = ''; //clears the inputs when there is an error
+        this.password = '';
+      }
+    },
   },
 };
 </script>
@@ -17,36 +38,29 @@ export default {
   <div class="min-h-screen bg-blue-100 flex items-center justify-center p-8">
     <div class="max-w-lg w-full bg-gray-200 rounded-2xl shadow-2xl p-12">
       <h2 class="text-4xl font-bold text-gray-900 mb-8 text-center">Sign In</h2>
-      
-      <form class="space-y-6">
-        <div v-for="(item, index) in items" :key="index">
-          <label class="block text-lg font-medium text-gray-700 mb-2">{{ item.label }}</label>
+
+      <!-- @submit: Listens for the form's submit event -->
+      <!-- v-model="email" binds the input's value to the email data property in real time-->
+      <form @submit.prevent="handleLogin" class="space-y-6">
+        <div>
+          <label class="block text-lg font-medium text-gray-700 mb-2">Email or Username</label>
           <input 
-            :type="item.type"
-            :placeholder="item.placeholder"
-            class="w-full px-6 py-4 border border-gray-300 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
+            type="text" v-model="identifier" placeholder="Enter your email or username"
+            class="w-full px-6 py-4 border border-gray-300 rounded-lg"
           />
         </div>
-
-        <div class="flex items-center justify-between mt-4">
-          <label class="flex items-center">
-            <input type="checkbox" class="w-5 h-5 text-green-500 border-gray-300 rounded focus:ring-green-500"/>
-            <span class="ml-3 text-lg text-gray-600">Remember me</span>
-          </label>
-          <button class="text-lg text-green-500 hover:text-green-600 font-medium">
-            Forgot password?
-          </button>
+        <div>
+          <label class="block text-lg font-medium text-gray-700 mb-2">Password</label>
+          <input 
+            type="password" v-model="password" placeholder="*******"
+            class="w-full px-6 py-4 border border-gray-300 rounded-lg"
+          />
         </div>
-
-        <button class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-4 rounded-lg text-xl transition-all">
+        <p v-if="error" class="text-red-500">{{ error }}</p>
+        <button class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-4 rounded-lg text-xl">
           Sign In
         </button>
       </form>
-
-      <div class="mt-8 text-center text-lg text-gray-600">
-        Don't have an account? 
-        <button class="text-green-500 hover:text-green-600 font-bold">Sign up</button>
-      </div>
     </div>
   </div>
 </template>
