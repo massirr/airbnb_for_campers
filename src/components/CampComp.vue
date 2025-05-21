@@ -1,46 +1,113 @@
 <script>
+import DatePicker from 'vue2-datepicker';
+import 'vue2-datepicker/index.css';
 
-  export default{
-    name: 'CampComp',
-    props: {
-      camp: Object,
+export default{
+  name: 'CampComp',
+  props: {
+    camp: Object,
+  },
+  components: {
+    DatePicker
+  },
+  mounted() {
+  },
+  data() {
+      return {
+        bookable: this.camp.bookable,
+        showDatePicker: false,    // Controls visibility of the date picker popup
+        startDate: null,          
+        endDate: null,            
+        dateError: ''            
+      }
+  },
+  computed: {
+    isLoggedIn() {
+      return !!localStorage.getItem('token');
     },
-    mounted() {
+    truncatedDescription() {
+      const maxLength = 150; // Set the maximum number of characters
+      return this.camp.description.length > maxLength
+        ? this.camp.description.substring(0, maxLength) + "..."
+        : this.camp.description;
     },
-    data() {
-        return {
-          bookable: this.camp.bookable 
-        }
-    },
-    computed: {
-      truncatedDescription() {
-        const maxLength = 150; // Set the maximum number of characters
-        return this.camp.description.length > maxLength
-          ? this.camp.description.substring(0, maxLength) + "..."
-          : this.camp.description;
-      },
-    },
-    methods:{
-      bookCamp(spotID) {
-        fetch(`http://localhost:3000/camps/spots/${spotID}`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ bookable: "false" }) // Send bookable as a string like in postman
-        })
-          .then((response) => response.json())
-          .then((updatedSpot) => {
-            this.bookable = updatedSpot.bookable; // update the local state to reflect the change
-          })
-          .catch((error) => {
-            console.error("Error updating camp status:", error);
-          });
+  },
+  methods:{
+    /**
+     * Toggle date picker popup visibility and handle redirection if not logged in
+     * When closing popup, reset date selections to start fresh next time
+     */
+    openDatePicker() {
+      if (!this.isLoggedIn) {
+        // Redirect to Account/Login page if user is not logged in
+        this.$emit('setActivePage', 'Account');
+        return;
+      }
+      // Toggle the visibility of date picker
+      this.showDatePicker = !this.showDatePicker;
+      
+      // Reset dates when closing the popup
+      if (!this.showDatePicker) {
+        this.startDate = null;
+        this.endDate = null;
       }
     },
-  }
-
+    
+    /**
+     * Reset date selections and error message
+     * Used when user wants to start over with date selection
+     */
+    clearDates() {
+      this.startDate = null;
+      this.endDate = null;
+      this.dateError = '';
+    },
+    
+    /**
+     * Process booking with selected dates
+     * Validates that both dates are selected before proceeding
+     * Updates camp status via API and resets UI state on success
+     */
+    confirmBooking(spotID) {
+      // Validate both dates are selected
+      if (!this.startDate || !this.endDate) {
+        this.dateError = 'Please select both start and end dates.';
+        return;
+      }
+      
+      // Clear any previous error
+      this.dateError = '';
+      
+      // Call API to update booking status with selected dates
+      fetch(`http://localhost:3000/camps/spots/${spotID}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          bookable: "false",  // Mark as booked
+          startDate: this.startDate,  // Send selected start date
+          endDate: this.endDate       // Send selected end date
+        })
+      })
+        .then((response) => response.json())
+        .then((updatedSpot) => {
+          // Update local state with server response
+          this.bookable = updatedSpot.bookable;
+          // Hide the date picker
+          this.showDatePicker = false;
+          // Reset date selection for next time
+          this.startDate = null;
+          this.endDate = null;
+        })
+        .catch((error) => {
+          console.error("Error updating camp status:", error);
+        });
+    }
+  },
+}
 </script>
+
 
 <template>
   <div class="bg-white rounded-xl shadow-md relative flex flex-col justify-between h-full">
@@ -63,16 +130,47 @@
           {{ `${camp.city}, Bel` }}
         </div>
 
-        <button
-          @click="bookCamp(camp.spotID)"
-          :disabled="!bookable"
-          :class="[
-            'h-[36px] text-white px-4 py-2 rounded-lg text-center text-sm',
-            bookable === 'true' ? 'bg-green-500 hover:bg-green-600' : 'bg-gray-400 cursor-not-allowed'
-          ]"
-        >
-          {{ bookable === 'true' ? 'Book Camp' : 'Booked' }}
-        </button>
+        <div class="relative flex flex-col items-start">
+          <button
+            @click="openDatePicker"
+            :disabled="!bookable"
+            :class="[
+              'h-[36px] text-white px-4 py-2 rounded-lg text-center text-sm',
+              bookable === 'true' ? 'bg-green-500 hover:bg-green-600' : 'bg-gray-400 cursor-not-allowed'
+            ]"
+          >
+            {{ bookable === 'true' ? 'Book Camp' : 'Booked' }}
+          </button>
+          <div v-if="showDatePicker" class="absolute left-0 top-full mt-2 z-50 bg-white p-4 rounded-xl shadow-xl min-w-[260px]">
+            <div class="mb-2">
+              <label class="block text-sm font-semibold mb-1">{{ !startDate ? 'Select Start Date' : 'Select End Date' }}</label>
+              <div v-if="!startDate" class="flex gap-2">
+                <DatePicker
+                  v-model="startDate"
+                  type="date"
+                  :not-before="new Date()"
+                  placeholder="Start date"
+                  class="w-full"
+                />
+              </div>
+              <div v-else class="flex gap-2">
+                <DatePicker
+                  v-model="endDate"
+                  type="date"
+                  :not-before="startDate"
+                  placeholder="End date"
+                  class="w-full"
+                />
+              </div>
+            </div>
+            <div v-if="dateError" class="text-red-500 text-xs mb-2">{{ dateError }}</div>
+            <div class="flex gap-2 mt-2">
+              <button v-if="startDate && endDate" @click="confirmBooking(camp.spotID)" class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded">Confirm</button>
+              <button v-if="startDate" @click="clearDates" class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded">Reset</button>
+              <button @click="showDatePicker = false" class="bg-gray-300 hover:bg-gray-400 text-gray-700 px-3 py-1 rounded">Cancel</button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
