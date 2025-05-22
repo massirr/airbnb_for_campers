@@ -10,37 +10,92 @@
         this.getCamps()
       },
       methods: {
-        getCamps() {
-        fetch("http://localhost:3000/camps/spots?bookable=false", {
-          method: "GET"
-        })
-            .then((response) => response.json())
-            .then((_camps) => {
-              this.bookedCamps = _camps
-              //console.log(this.bookedCamps)
+        userId() {
+          const token = localStorage.getItem('token');
+          if (!token) return null;
+          try {
+            const details = JSON.parse(atob(token.split('.')[1]));
+            return details.userId || null;
+          } catch (e) {
+            return null;
+          }
+        },
+        getCamps() { // the bookings that are not canceled
+          fetch(`http://localhost:3000/bookings/${this.userId()}`, {
+            method: "GET"
+          })
+              .then((response) => response.json())
+              .then((_camps) => {
+                console.log("Raw API response:", _camps);
+                
+                // Check if _camps is array, if not, set to empty array
+                if (!Array.isArray(_camps)) {
+                  console.error("API did not return an array:", _camps);
+                  this.bookedCamps = [];
+                  return;
+                }
+                
+                // Use a Set to track unique spotIDs
+                const uniqueSpotIDs = new Set();
+                
+                // Filter out duplicates based on spotID
+                this.bookedCamps = _camps.filter(camp => {
+                  // Skip invalid camps
+                  if (!camp || !camp.campingSpot_bookings || !camp.campingSpot_bookings[0]) return false;
+                  
+                  const spotID = camp.campingSpot_bookings[0].spotID;
+                  // If we've seen this ID before, skip it
+                  if (uniqueSpotIDs.has(spotID)) return false;
+                  
+                  // Otherwise add it to our Set and keep this item
+                  uniqueSpotIDs.add(spotID);
+                  return true;
+                });
+                
+                console.log("Unique camps:", this.bookedCamps);
+              })
+              .catch((error) => {
+                console.error("Error fetching camps:", error); // Handle errors
+              });
+        },
+        cancelBooking(spotID, bookingID) {
+          // First, mark the booking as canceled
+          fetch(`http://localhost:3000/bookings/${bookingID}`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ isCanceled: "true" }) // Mark booking as canceled
+          })
+            .then(response => {
+              if (!response.ok) {
+                throw new Error('Failed to update booking status');
+              }
+              return response.json();
+            })
+            .then(updatedBooking => {
+              console.log('Booking marked as canceled:', updatedBooking);
+              
+              // Then update the camp spot to be bookable again
+              return fetch(`http://localhost:3000/camps/spots/${spotID}`, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ bookable: "true" }) // Mark spot as available
+              });
+            })
+            .then(response => response.json())
+            .then(updatedSpot => {
+              console.log('Camp spot marked as available:', updatedSpot);
+              
+              // Refresh the camps list to reflect changes
+              this.getCamps();
             })
             .catch((error) => {
-              console.error("Error fetching camps:", error); // Handle errors
+              console.error("Error during cancellation process:", error);
             });
-        },
-        cancelBooking(spotID) {
-        fetch(`http://localhost:3000/camps/spots/${spotID}`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ bookable: "true" }) // Send bookable as a string like in postman
-        })
-          .then((response) => response.json())
-          .then(() => {
-            if(this.bookedCamps){
-              this.getCamps(); // update the local state to reflect the change
-            }
-          })
-          .catch((error) => {
-            console.error("Error updating camp status:", error);
-          });
-      }
+        }
       }
     };
 </script>
@@ -59,15 +114,15 @@
         :key="index"
         class="bg-white rounded-xl shadow-md p-6 flex flex-col justify-between"
       >
-        <h3 class="text-xl font-bold text-gray-900 mb-4">{{ camp.name }}</h3>
+        <h3 class="text-xl font-bold text-gray-900 mb-4">{{ camp.campingSpot_bookings[0].campingSpot.name }}</h3> <!--multiple joins-->
         <p class="text-gray-700 mb-2">
-          <span class="font-semibold">Price:</span> ${{ camp.price }}
+          <span class="font-semibold">Price:</span> ${{ camp.campingSpot_bookings[0].campingSpot.price }}
         </p>
         <p class="text-gray-700 mb-4">
-          <span class="font-semibold">Location:</span> {{ camp.city }}, Bel
+          <span class="font-semibold">Location:</span> {{ camp.campingSpot_bookings[0].campingSpot.city }}, Bel
         </p>
         <button
-          @click="cancelBooking(camp.spotID)"
+          @click="cancelBooking(camp.campingSpot_bookings[0].spotID, camp.bookingID)"
           class="bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-4 rounded-lg transition-colors"
         >
           Cancel Booking

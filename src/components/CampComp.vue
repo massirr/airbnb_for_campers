@@ -21,9 +21,19 @@ export default{
         dateError: ''            
       }
   },
-  computed: {
+  computed: { //  Computed properties cache their results and only recompute when dependencies change
     isLoggedIn() {
       return !!localStorage.getItem('token');
+    },
+    userId() {
+      const token = localStorage.getItem('token');
+      if (!token) return null;
+      try {
+        const details = JSON.parse(atob(token.split('.')[1]));
+        return details.userId || null;
+      } catch (e) {
+        return null;
+      }
     },
     truncatedDescription() {
       const maxLength = 150; // Set the maximum number of characters
@@ -66,7 +76,7 @@ export default{
     /**
      * Process booking with selected dates
      * Validates that both dates are selected before proceeding
-     * Updates camp status via API and resets UI state on success
+     * Updates camp status via API and creates booking record
      */
     confirmBooking(spotID) {
       // Validate both dates are selected
@@ -78,31 +88,54 @@ export default{
       // Clear any previous error
       this.dateError = '';
       
-      // Call API to update booking status with selected dates
-      fetch(`http://localhost:3000/camps/spots/${spotID}`, {
+      // First, save the booking record to the bookings endpoint
+      fetch('http://localhost:3000/bookings', {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          bookable: "false",  // Mark as booked
-          startDate: this.startDate,  // Send selected start date
-          endDate: this.endDate       // Send selected end date
+          userID: this.userId,
+          spotID: spotID,
+          startDate: this.startDate,  
+          endDate: this.endDate,      
+          price: this.camp.price
         })
       })
-        .then((response) => response.json())
-        .then((updatedSpot) => {
-          // Update local state with server response
-          this.bookable = updatedSpot.bookable;
-          // Hide the date picker
-          this.showDatePicker = false;
-          // Reset date selection for next time
-          this.startDate = null;
-          this.endDate = null;
-        })
-        .catch((error) => {
-          console.error("Error updating camp status:", error);
-        });
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Failed to create booking');
+        }
+        return response.json();
+      })
+      .then(bookingData => {
+        console.log('Booking created:', bookingData);
+        
+          // After booking is saved, update the camp spot status
+          return fetch(`http://localhost:3000/camps/spots/${spotID}`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              bookable: "false",  // Mark as booked
+            })
+          });
+      })
+      .then(response => response.json())
+      .then(updatedSpot => {
+        // Update local state with server response
+        this.bookable = updatedSpot.bookable;
+        // Hide the date picker
+        this.showDatePicker = false;
+        // Reset date selection for next time
+        this.startDate = null;
+        this.endDate = null;
+      })
+      .catch(error => {
+        console.error("Error processing booking:", error);
+        this.dateError = 'Could not complete booking. Please try again.';
+      });
     }
   },
 }

@@ -1,57 +1,57 @@
 <script>
-export default {
-  name: "DetailsComp",
-  data() {
-    return {
-      user: null,
-      activeSection: 'personal' // Track which sidebar section is active
-    };
-  },
-  computed: {
-    isLoggedIn() {
-      return !!localStorage.getItem('token');
+  export default {
+    name: "DetailsComp",
+    data() {
+      return {
+        user: null,
+        activeSection: 'personal' // Track which sidebar section is active
+      };
     },
-    userId() {
-      const token = localStorage.getItem('token');
-      if (!token) return null;
-      try {
-        const details = JSON.parse(atob(token.split('.')[1]));
-        return details.userId || null;
-      } catch (e) {
-        return null;
+    computed: {
+      isLoggedIn() {
+        return !!localStorage.getItem('token');
+      },
+      userId() {
+        const token = localStorage.getItem('token');
+        if (!token) return null;
+        try {
+          const details = JSON.parse(atob(token.split('.')[1]));
+          return details.userId || null;
+        } catch (e) {
+          return null;
+        }
       }
-    }
-  },
-  methods: {
-    logout() {
-      localStorage.removeItem('token');
-      this.$emit('setActiveComp', 'SignIn');
     },
-    getUser(userId) {
-      if (!userId) return;
-      fetch(`http://localhost:3000/users/${userId}`)
-        .then((response) => {
-          if (!response.ok) throw new Error('User not found');
-          return response.json();
-        })
-        .then((_user) => {
-          this.user = _user;
-          console.log(this.user.username);
-        })
-        .catch((error) => {
-          this.user = null;
-          console.error('Error fetching user:', error);
-        });
+    methods: {
+      logout() {
+        localStorage.removeItem('token');
+        this.$emit('setActiveComp', 'SignIn');
+      },
+      getUser(userId) {
+        if (!userId) return;
+        fetch(`http://localhost:3000/users/${userId}`)
+          .then((response) => {
+            if (!response.ok) throw new Error('User not found');
+            return response.json();
+          })
+          .then((_user) => {
+            this.user = _user;
+            //console.log(this.user.username);
+          })
+          .catch((error) => {
+            this.user = null;
+            console.error('Error fetching user:', error);
+          });
+      }
+    },
+    mounted() {
+      if (!this.isLoggedIn) {
+        this.$emit('setActiveComp', 'SignIn');
+        return;
+      }
+      this.getUser(this.userId); // the userId is returned by the method
     }
-  },
-  mounted() {
-    if (!this.isLoggedIn) {
-      this.$emit('setActiveComp', 'SignIn');
-      return;
-    }
-    this.getUser(this.userId); // the userId is returned by the method
-  }
-};
+  };
 </script>
 
 <template>
@@ -64,8 +64,8 @@ export default {
           <div class="w-20 h-20 rounded-full bg-orange-300 text-white flex items-center justify-center text-2xl font-bold">
             ID
           </div>
-          <h2 class="mt-4 text-xl font-semibold text-gray-800">{{this.user.username}}</h2>
-          <p class="text-gray-500 text-sm">{{this.user.email}}</p>
+          <h2 class="mt-4 text-xl font-semibold text-gray-800">{{ user?.username || 'Loading...' }}</h2>
+          <p class="text-gray-500 text-sm">{{ user?.email || 'Loading...' }}</p>
         </div>
 
         <nav class="space-y-8 text-left">
@@ -107,15 +107,15 @@ export default {
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-gray-800 w-full max-w-2xl mx-auto">
           <div>
             <p class="font-semibold">First name</p>
-            <p class="text-gray-600">{{ this.user.username || 'N/A' }}</p>
+            <p class="text-gray-600">{{ user?.username || 'N/A' }}</p>
           </div>
           <div>
             <p class="font-semibold">Last name</p>
-            <p class="text-gray-600">{{ this.user.username || 'N/A' }}</p>
+            <p class="text-gray-600">{{ user?.username || 'N/A' }}</p>
           </div>
           <div>
             <p class="font-semibold">Email address</p>
-            <p class="text-gray-600">{{this.user.email}}</p>
+            <p class="text-gray-600">{{ user?.email || 'N/A' }}</p>
           </div>
           <div>
             <p class="font-semibold">Mobile number</p>
