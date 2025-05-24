@@ -5,6 +5,7 @@
     import Bookings from '@/pages/bookingsPage.vue';
     import Camps from '@/pages/campsPage.vue';
     import CampInfo from '@/pages/campInfoPage.vue';
+    import Create from '@/pages/createCampPage.vue';
     import Home from '@/pages/homePage.vue';
 
     export default {
@@ -19,8 +20,9 @@
         Bookings,
         Camps,
         CampInfo,
+        Create,
         Home,
-        NavBar,
+        NavBar
       },
       methods: {
         setActivePage(page) { // the word page comes from NavBarComp
@@ -40,6 +42,7 @@
     <Bookings v-if="activePage == 'Bookings'"/>
     <Camps v-if="activePage == 'Camps'" @setActivePage="setActivePage"/>
     <CampInfo v-if="activePage == 'CampInfo'"/>
+    <Create v-if="activePage == 'Create'"/>
     <Home v-if="activePage == 'Home'" @setActivePage="setActivePage" @setCampPage="setActivePage"/> <!--View all camps is only active on the home page-->
   </div>
 </template>
