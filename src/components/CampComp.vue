@@ -108,8 +108,8 @@ export default{
         }
         return response.json();
       })
-      .then(bookingData => {
-        console.log('Booking created:', bookingData);
+      .then(() => {
+        //console.log('Booking created:', bookingData);
         
           // After booking is saved, update the camp spot status
           return fetch(`http://localhost:3000/camps/spots/${spotID}`, {

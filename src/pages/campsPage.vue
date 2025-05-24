@@ -1,6 +1,6 @@
 <script>
   import Camp from '@/components/CampComp.vue';
-  import Dropdown from '@/components/DropdownComp.vue';
+  //import Dropdown from '@/components/DropdownComp.vue';
 
   export default{
     name: 'campsPage',
@@ -30,7 +30,7 @@
     },
     components: {
       Camp,
-      Dropdown
+      //Dropdown
     },
     methods: {
       getCamps() {
@@ -56,7 +56,7 @@
       <h2 class="text-3xl font-bold •text-green-500 mb-6 text-center">
         {{title}}
       </h2>
-      <Dropdown v-if="showDropdown"/>
+      <!--<Dropdown v-if="showDropdown"/>-->
       <div v-if="camps" class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <!--Only render the Camp components if camps is not null-->
         <!--limiting the number of items displayed based on the limit prop-->
