@@ -1,5 +1,8 @@
 <script>
-  i
+
+  export default{
+    name: 'createCampPage',
+  }
 
 </script>
 

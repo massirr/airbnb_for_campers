@@ -1,49 +1,71 @@
 <script>
-    export default {
-      name: "DropdownComp",
-      data() {
-        return {
-          open: [false, false, false, false, false], // one 'open' per button hard coded 
-          selected: ['', '', '', '', ''], // one 'selected' per button if I add open, I add selected
-          options: ['Option 1', 'Option 2', 'Option 3', 'Option 4'],
-          NamesToUseInTheDropdown: ['Select a Location', 'Select a Feature']
-        }
-      },
-      methods: {
-        toggleDropdown(dropdownindex) {
-          this.open = this.open.map((val, i) => i === dropdownindex ? !val : false); // changes false to true when button is clicked in open array
-        },
-        selectOption(dropdownindex, option) {
-          //console.log(`selected ${dropdownindex} ${option}`);
-          // this.$set to ensure reactivity -> makes sure the UI updates to reflect this change after updateting the selected and open arrays.
-          this.$set(this.selected, dropdownindex, option);
-          this.$set(this.open, dropdownindex, false);
-        },
-      }
+export default {
+  name: "DropdownComp",
+  data() {
+    return {
+      checkboxes: [], // Array to keep track of which checkboxes are checked
+      features: [],   // Array to store the features fetched from the server
+      open: false     // Controls dropdown open/close
     }
+  },
+  mounted() {
+    this.fetchFeatures();
+  },
+  computed: {
+    uniqueFeatures() {
+      // Only keep the first feature with each name (remove duplicates)
+      const seen = new Set();
+      return this.features.filter(f => {
+        const name = f.features.featureName;
+        if (seen.has(name)) return false;
+        seen.add(name);
+        return true;
+      });
+    }
+  },
+  methods: {
+    fetchFeatures() {
+      fetch("http://localhost:3000/features")
+        .then(response => response.json())
+        .then(data => {
+          this.features = data;
+          this.checkboxes = Array(data.length).fill(false);
+        })
+        .catch(error => {
+          console.error("Error fetching features:", error);
+        });
+    },
+    toggleDropdown() {
+      this.open = !this.open;
+    }
+  }
+}
 </script>
 
 <template>
-  <div class="m-5">
-    <div class="flex gap-4 justify-center"> <!--justify-center → center items horizontally.-->
-      <div v-for="(times, dropdownindex) in 5" :key="dropdownindex" class="relative"> <!--index specifies what dropdownlist is being used-->
-        <button @click="toggleDropdown(dropdownindex)"
-                class="text-center w-[190px] bg-white border border-black rounded-md px-3 py-2 text-black">
-
-          {{ selected[dropdownindex] || 'Select an option' }}
-
-          <i v-if="!open[dropdownindex] && !selected[dropdownindex]" class="pi pi-chevron-down px-3 py-2"></i>
-        </button>
-
-        <div v-if="open[dropdownindex]" class="absolute z-10 w-[190px] bg-white border border-black mt-1 py-2 rounded-md">
-          
-          <div v-for="option in options" :key="option"
-               @click="selectOption(dropdownindex, option)"
-               class="px-3 py-2 hover:bg-gray-300 cursor-pointer rounded-md">
-            {{ option }}
-          </div>
+  <div class="m-5 w-full max-w-xl">
+    <!-- Dropdown Button -->
+    <button @click="toggleDropdown" class="flex items-center justify-between w-full bg-white border border-gray-400 rounded-md px-4 py-2 text-black shadow">
+      <span>Select Features</span>
+      <i :class="['pi', open ? 'pi-chevron-up' : 'pi-chevron-down', 'ml-2']"></i> <!-- this handles the arrow near the dropdown to move up and down-->
+    </button>
+    <!-- Dropdown Content -->
+    <div v-if="open" class="mt-2 border border-gray-300 rounded-md bg-white shadow-lg p-4">
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+        <div v-for="(feature, idx) in uniqueFeatures" :key="feature.features.featureName" class="flex items-center gap-2">
+          <input type="checkbox" v-model="checkboxes[idx]" :id="'cb-' + idx" class="accent-black"
+            @change="$emit('feature-selected', feature.features.featureName, checkboxes[idx])"
+          />
+          <label :for="'cb-' + idx">{{ feature.features.featureName }}</label>
         </div>
       </div>
     </div>
   </div>
 </template>
+
+<!--size of the icon-->
+<style scoped>
+.pi { 
+  font-size: 1.2em;
+}
+</style>
