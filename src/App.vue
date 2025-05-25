@@ -13,7 +13,8 @@
       data() {
         return {
           activePage: "Camps",
-        }
+          campData: null // Store the camp data for CampInfo page
+        };
       },
       components: {
         Account,
@@ -25,8 +26,13 @@
         NavBar
       },
       methods: {
-        setActivePage(page) { // the word page comes from NavBarComp
-          this.activePage = page;
+        setActivePage(payload) {
+          if (typeof payload === 'object' && payload.page === 'CampInfo') {
+            this.activePage = payload.page;
+            this.campData = payload.camp; // Store the camp data
+          } else {
+            this.activePage = payload;
+          }
         },
       }
     }
@@ -41,7 +47,7 @@
     <Account v-if="activePage == 'Account'"/>
     <Bookings v-if="activePage == 'Bookings'"/>
     <Camps v-if="activePage == 'Camps'" @setActivePage="setActivePage"/>
-    <CampInfo v-if="activePage == 'CampInfo'"/>
+    <CampInfo v-if="activePage == 'CampInfo'" @setActivePage="setActivePage" :camp="campData"/>
     <Create v-if="activePage == 'Create'"/>
     <Home v-if="activePage == 'Home'" @setActivePage="setActivePage" @setCampPage="setActivePage"/> <!--View all camps is only active on the home page-->
   </div>

@@ -210,9 +210,9 @@ export default{
     <!-- Place this consistently inside the card and remove external margins -->
     <div class="px-4 pb-4">
       <a
-        @click="$emit('setActivePage', 'CampInfo')"
+        @click="$emit('setActivePage', { page: 'CampInfo', camp })" 
         class="block bg-orange-400 text-white text-center py-1 rounded-xl hover:bg-orange-500"
-      >
+      ><!--the emit to receive the camp object-->
         More
       </a>
     </div>
