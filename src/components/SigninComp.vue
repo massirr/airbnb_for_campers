@@ -102,7 +102,7 @@ export default {
         if (!loginRes.ok) throw new Error(loginData.message || 'Registration successful but login failed');
 
         // Store the token and redirect
-        localStorage.setItem('token', loginData.token);
+        localStorage.setItem('token', loginData.token); // ID token
         this.$emit('setActiveComp', 'Details');
       } catch (err) {
         this.error = err.message;

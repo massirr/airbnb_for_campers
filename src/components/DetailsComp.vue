@@ -1,4 +1,5 @@
 <script>
+  // were the logout logic is
   export default {
     name: "DetailsComp",
     data() {
@@ -20,7 +21,7 @@
         } catch (e) {
           return null;
         }
-      }
+      },
     },
     methods: {
       logout() {

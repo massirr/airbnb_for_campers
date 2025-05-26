@@ -25,13 +25,13 @@
       <!-- Buttons -->
       <div class="mt-10 flex justify-center flex-wrap gap-4">
         <button
-          @click="$emit('setCampPage', 'Camps')"
+          @click="$emit('setActivePage', 'Camps')"
           class="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-8 rounded-xl shadow-lg transition-transform transform hover:scale-105"
         >
           Explore Camps
         </button>
         <button
-          @click="$emit('setCreatePage', 'Camps')"
+          @click="$emit('setActivePage', 'Create')"
           class="bg-white hover:bg-gray-100 text-gray-800 border border-gray-300 font-semibold py-3 px-8 rounded-xl shadow-sm transition-transform transform hover:scale-105"
         >
           Learn More
