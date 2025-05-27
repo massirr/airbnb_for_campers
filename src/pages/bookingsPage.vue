@@ -3,7 +3,7 @@
       name: "bookingsPage",
       data() {
         return {
-          bookedCamps: null
+          bookedCamps: null,
         }
       },
       mounted() {
@@ -26,7 +26,7 @@
           })
               .then((response) => response.json())
               .then((_camps) => {
-                console.log("Raw API response:", _camps);
+                //console.log("Raw API response:", _camps);
                 
                 // Check if _camps is array, if not, set to empty array
                 if (!Array.isArray(_camps)) {
@@ -52,7 +52,7 @@
                   return true;
                 });
                 
-                console.log("Unique camps:", this.bookedCamps);
+                //console.log("Unique camps:", this.bookedCamps);
               })
               .catch((error) => {
                 console.error("Error fetching camps:", error); // Handle errors
@@ -73,8 +73,8 @@
               }
               return response.json();
             })
-            .then(updatedBooking => {
-              console.log('Booking marked as canceled:', updatedBooking);
+            .then(() => {
+              //console.log('Booking marked as canceled:', updatedBooking);
               
               // Then update the camp spot to be bookable again
               return fetch(`http://localhost:3000/camps/spots/${spotID}`, {
@@ -86,8 +86,8 @@
               });
             })
             .then(response => response.json())
-            .then(updatedSpot => {
-              console.log('Camp spot marked as available:', updatedSpot);
+            .then(() => {
+              //console.log('Camp spot marked as available:', updatedSpot);
               
               // Refresh the camps list to reflect changes
               this.getCamps();
@@ -95,7 +95,7 @@
             .catch((error) => {
               console.error("Error during cancellation process:", error);
             });
-        }
+        },
       }
     };
 </script>
@@ -114,12 +114,18 @@
         :key="index"
         class="bg-white rounded-xl shadow-md p-6 flex flex-col justify-between"
       >
-        <h3 class="text-xl font-bold text-gray-900 mb-4">{{ camp.campingSpot_bookings[0].campingSpot.name }}</h3> <!--multiple joins-->
+        <h3 class="text-xl font-bold text-gray-900 mb-4">{{ camp.campingSpot_bookings[0].campingSpot.name }}</h3>
         <p class="text-gray-700 mb-2">
           <span class="font-semibold">Price:</span> ${{ camp.campingSpot_bookings[0].campingSpot.price }}
         </p>
         <p class="text-gray-700 mb-4">
-          <span class="font-semibold">Location:</span> {{ camp.campingSpot_bookings[0].campingSpot.city }}, Bel
+          <span class="font-semibold">Location:</span> {{ camp.campingSpot_bookings[0].campingSpot.city }}
+        </p>
+        <p class="text-gray-700 mb-4">
+          <span class="font-semibold">Start Date:</span> {{ camp.startDate.split('T')[0] }}
+        </p>
+        <p class="text-gray-700 mb-4">
+          <span class="font-semibold">End Date:</span> {{ camp.endDate.split('T')[0] }}
         </p>
         <button
           @click="cancelBooking(camp.campingSpot_bookings[0].spotID, camp.bookingID)"

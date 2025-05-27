@@ -13,7 +13,7 @@
         }
       },
       mounted() {
-        console.log(this.camp); // Log the camp object to the console
+        //console.log(this.camp); // Log the camp object to the console
       }
     }
 </script>
