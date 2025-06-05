@@ -33,6 +33,17 @@
           return null;
         }
       },
+      isAdmin() {
+        const token = localStorage.getItem('token');
+        if (!token) return false;
+
+        try {
+          const details = JSON.parse(atob(token.split('.')[1]));
+          return details.isAdmin === true; // Check if the user is an admin
+        } catch (e) {
+          return false;
+        }
+      },
     },
     methods: {
       logout() {
@@ -135,7 +146,7 @@
                 </li>
               </ul>
             </div>
-            <div>
+            <div v-if="isAdmin">
               <h3 class="text-sm font-bold text-gray-500 uppercase mb-2">Dashboard</h3>
               <ul class="space-y-2 text-gray-700">
                 <li>
@@ -206,7 +217,7 @@
 
         <!--Dashboard info-->
         <section
-          v-if="activeSection === 'dashboard'"
+          v-if="activeSection === 'dashboard' && isAdmin"
           class="w-full lg:w-3/4 bg-white rounded-xl shadow p-8 flex flex-col items-center"
         >
           <h1 class="text-2xl font-bold text-gray-800 mb-6 text-center">Dashboard</h1>
