@@ -7,9 +7,26 @@
         }
       },
       mounted() {
-        this.getCamps()
+        if (!this.isLoggedIn()) {
+          localStorage.removeItem('token'); // Ensure token is removed if expired
+          this.$router.push('/signin'); // Redirect to sign-in page
+          return;
+        }
+        this.getCamps();
       },
       methods: {
+        isLoggedIn() {
+          const token = localStorage.getItem('token');
+          if (!token) return false;
+
+          try {
+            const details = JSON.parse(atob(token.split('.')[1]));
+            const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
+            return details.exp > currentTime; // Check if token is still valid
+          } catch (e) {
+            return false;
+          }
+        },
         userId() {
           const token = localStorage.getItem('token');
           if (!token) return null;

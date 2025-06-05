@@ -42,7 +42,7 @@
         
         <!-- MapComp Section -->
         <div class="flex-grow">
-          <MapComp />
+          <MapComp :location="{ name: camp.name, latitude: camp.latitude, longitude: camp.longitude }" />
         </div>
       </div>
 

@@ -5,16 +5,27 @@
     data() {
       return {
         user: null,
-        activeSection: 'personal' // Track which sidebar section is active
+        activeSection: 'personal', // Track which sidebar section is active
+        dashboardData: null // To store data from the dashboard endpoint
       };
     },
     computed: {
       isLoggedIn() {
-        return !!localStorage.getItem('token');
+        const token = localStorage.getItem('token');
+        if (!token) return false;
+
+        try {
+          const details = JSON.parse(atob(token.split('.')[1]));
+          const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
+          return details.exp > currentTime; // Check if token is still valid
+        } catch (e) {
+          return false;
+        }
       },
       userId() {
         const token = localStorage.getItem('token');
         if (!token) return null;
+
         try {
           const details = JSON.parse(atob(token.split('.')[1]));
           return details.userId || null;
@@ -43,14 +54,38 @@
             this.user = null;
             console.error('Error fetching user:', error);
           });
+      },
+      fetchDashboardData() {
+        if (!this.isLoggedIn) return;
+        const token = localStorage.getItem('token');
+        fetch('http://localhost:3000/dashboard', {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        })
+          .then(response => {
+            if (!response.ok) throw new Error('Failed to fetch dashboard data');
+            return response.json();
+          })
+          .then(data => {
+            this.dashboardData = data;
+            console.log('Dashboard data:', this.dashboardData);
+          })
+          .catch(error => {
+            console.error('Error fetching dashboard data:', error);
+          });
       }
     },
     mounted() {
       if (!this.isLoggedIn) {
+        localStorage.removeItem('token'); // Ensure token is removed if expired
         this.$emit('setActiveComp', 'SignIn');
         return;
       }
       this.getUser(this.userId); // the userId is returned by the method
+      this.fetchDashboardData();
     }
   };
 </script>
@@ -96,6 +131,19 @@
                     @click="activeSection = 'personal'"
                   >
                     👤 Personal information
+                  </button>
+                </li>
+              </ul>
+            </div>
+            <div>
+              <h3 class="text-sm font-bold text-gray-500 uppercase mb-2">Dashboard</h3>
+              <ul class="space-y-2 text-gray-700">
+                <li>
+                  <button
+                    :class="{'text-green-600 font-bold': activeSection === 'dashboard', 'hover:text-green-600': activeSection !== 'dashboard'}" 
+                    @click="activeSection = 'dashboard'"
+                  >
+                    📊 Dashboard
                   </button>
                 </li>
               </ul>
@@ -154,6 +202,44 @@
         >
           <h1 class="text-2xl font-bold text-gray-800 mb-6 text-center">Bookings</h1>
           <p class="text-lg text-gray-600 text-center">This is the page with the booking info.</p>
+        </section>
+
+        <!--Dashboard info-->
+        <section
+          v-if="activeSection === 'dashboard'"
+          class="w-full lg:w-3/4 bg-white rounded-xl shadow p-8 flex flex-col items-center"
+        >
+          <h1 class="text-2xl font-bold text-gray-800 mb-6 text-center">Dashboard</h1>
+          <table class="table-auto border-collapse border border-gray-300 w-full text-center">
+            <thead>
+              <tr>
+                <th class="border border-gray-300 px-4 py-2">Users</th>
+                <th class="border border-gray-300 px-4 py-2">Camping Spots</th>
+                <th class="border border-gray-300 px-4 py-2">Bookings</th>
+                <th class="border border-gray-300 px-4 py-2">Features</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="border border-gray-300 px-4 py-2">User 1</td>
+                <td class="border border-gray-300 px-4 py-2">Camping Spot 1</td>
+                <td class="border border-gray-300 px-4 py-2">Booking 1</td>
+                <td class="border border-gray-300 px-4 py-2">Feature 1</td>
+              </tr>
+              <tr>
+                <td class="border border-gray-300 px-4 py-2">User 2</td>
+                <td class="border border-gray-300 px-4 py-2">Camping Spot 2</td>
+                <td class="border border-gray-300 px-4 py-2">Booking 2</td>
+                <td class="border border-gray-300 px-4 py-2">Feature 2</td>
+              </tr>
+              <tr>
+                <td class="border border-gray-300 px-4 py-2">User 3</td>
+                <td class="border border-gray-300 px-4 py-2">Camping Spot 3</td>
+                <td class="border border-gray-300 px-4 py-2">Booking 3</td>
+                <td class="border border-gray-300 px-4 py-2">Feature 3</td>
+              </tr>
+            </tbody>
+          </table>
         </section>
       </div>
     </div>

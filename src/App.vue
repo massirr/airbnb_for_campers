@@ -12,7 +12,7 @@
       name: 'App',
       data() {
         return {
-          activePage: "Camps",
+          activePage: "Home",
           campData: null // Store the camp data for CampInfo page
         };
       },
