@@ -42,7 +42,7 @@ export default {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ 
             identifier: this.identifier, 
-            password: this.password 
+            password: this.password
           }),
         });
   

@@ -1,4 +1,6 @@
 <script>
+  import Dashboard from './Dashboard.vue';
+
   // were the logout logic is
   export default {
     name: "DetailsComp",
@@ -8,6 +10,9 @@
         activeSection: 'personal', // Track which sidebar section is active
         dashboardData: null // To store data from the dashboard endpoint
       };
+    },
+    components: {
+      Dashboard,
     },
     computed: {
       isLoggedIn() {
@@ -220,37 +225,7 @@
           v-if="activeSection === 'dashboard' && isAdmin"
           class="w-full lg:w-3/4 bg-white rounded-xl shadow p-8 flex flex-col items-center"
         >
-          <h1 class="text-2xl font-bold text-gray-800 mb-6 text-center">Dashboard</h1>
-          <table class="table-auto border-collapse border border-gray-300 w-full text-center">
-            <thead>
-              <tr>
-                <th class="border border-gray-300 px-4 py-2">Users</th>
-                <th class="border border-gray-300 px-4 py-2">Camping Spots</th>
-                <th class="border border-gray-300 px-4 py-2">Bookings</th>
-                <th class="border border-gray-300 px-4 py-2">Features</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td class="border border-gray-300 px-4 py-2">User 1</td>
-                <td class="border border-gray-300 px-4 py-2">Camping Spot 1</td>
-                <td class="border border-gray-300 px-4 py-2">Booking 1</td>
-                <td class="border border-gray-300 px-4 py-2">Feature 1</td>
-              </tr>
-              <tr>
-                <td class="border border-gray-300 px-4 py-2">User 2</td>
-                <td class="border border-gray-300 px-4 py-2">Camping Spot 2</td>
-                <td class="border border-gray-300 px-4 py-2">Booking 2</td>
-                <td class="border border-gray-300 px-4 py-2">Feature 2</td>
-              </tr>
-              <tr>
-                <td class="border border-gray-300 px-4 py-2">User 3</td>
-                <td class="border border-gray-300 px-4 py-2">Camping Spot 3</td>
-                <td class="border border-gray-300 px-4 py-2">Booking 3</td>
-                <td class="border border-gray-300 px-4 py-2">Feature 3</td>
-              </tr>
-            </tbody>
-          </table>
+          <Dashboard />
         </section>
       </div>
     </div>
