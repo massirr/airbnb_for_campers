@@ -1,6 +1,7 @@
 <div align="center">
 
 # 🏕️ AIRBNB_FOR_CAMPERS
+## Frontend
 
 **Connect, Explore, and Experience the Great Outdoors**
 
@@ -93,7 +94,7 @@ npm install
 Run the project with:
 
 ```bash
-npm start
+npm start serve
 ```
 
 ---
