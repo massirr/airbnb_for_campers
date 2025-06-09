@@ -99,10 +99,3 @@ npm test
 
 
 </div>
-
-<style>
-/* Center everything for GitHub rendering */
-body, html, #readme, div[align="center"] {
-  text-align: center;
-}
-</style>
