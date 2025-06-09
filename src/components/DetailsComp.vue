@@ -87,7 +87,7 @@
           })
           .then(data => {
             this.dashboardData = data;
-            console.log('Dashboard data:', this.dashboardData);
+            //console.log('Dashboard data:', this.dashboardData);
           })
           .catch(error => {
             console.error('Error fetching dashboard data:', error);
@@ -197,11 +197,11 @@
             </div>
             <div>
               <p class="font-semibold">Gender</p>
-              <p class="text-gray-600">Male</p>
+              <p class="text-gray-600">None</p>
             </div>
             <div>
               <p class="font-semibold">Language</p>
-              <p class="text-gray-600">English</p>
+              <p class="text-gray-600">None</p>
             </div>
           </div>
           <div class="mt-15 text-right w-full max-w-2xl mx-auto">
@@ -225,7 +225,7 @@
           v-if="activeSection === 'dashboard' && isAdmin"
           class="w-full lg:w-3/4 bg-white rounded-xl shadow p-8 flex flex-col items-center"
         >
-          <Dashboard />
+          <Dashboard :overview="dashboardData"/>
         </section>
       </div>
     </div>

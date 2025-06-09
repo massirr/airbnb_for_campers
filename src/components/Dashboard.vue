@@ -2,12 +2,17 @@
 
   export default {
     name: "DashboardComp",
+    props: {
+      overview: {
+        type: Object,
+      },
+    },
     data() {
       return {
-        users: null,
-        camps: null,
-        bookings: null,
-      }
+        users: [],
+        camps: [], 
+        bookings: [] // prevents no error is thrown when users[0], camps[0], or bookings[0]. are called
+      };
     },
     mounted() {
       this.getUsers()
@@ -71,15 +76,23 @@
     <!-- Users Section -->
     <section class="mb-12">
       <h2 class="text-2xl font-semibold text-gray-700 mb-4">Users</h2>
+      <div class="bg-blue-100 text-blue-800 p-4 rounded-lg mb-4 shadow">
+        <p class="text-lg font-medium">Total Users: <span class="font-bold">{{ overview.users.total }}</span></p>
+      </div>
       <div class="overflow-x-auto bg-white shadow-md rounded-lg">
         <table class="table-auto border-collapse border border-gray-300 w-full text-left">
-          <thead class="bg-blue-500 text-white">
+          <thead class="bg-blue-500 text-white" v-if="users.length > 0">
             <tr>
-              <th class="border border-gray-300 px-4 py-2" v-for="(key, keyIndex) in Object.keys(users[0] || {})" :key="keyIndex">
+              <th class="border border-gray-300 px-4 py-2" v-for="(key, keyIndex) in Object.keys(users[0])" :key="keyIndex">
                 {{ key }}
               </th>
             </tr>
           </thead>
+          <tbody v-else>
+            <tr>
+              <td colspan="100%" class="text-center text-gray-500 py-4">No users available</td>
+            </tr>
+          </tbody>
           <tbody>
             <tr v-for="(user, index) in users" :key="index" class="hover:bg-blue-100">
               <td class="border border-gray-300 px-4 py-2" v-for="(value, keyIndex) in Object.values(user)" :key="keyIndex">
@@ -94,9 +107,16 @@
     <!-- Camps Section -->
     <section class="mb-12">
       <h2 class="text-2xl font-semibold text-gray-700 mb-4">Camps</h2>
+      <div class="bg-green-100 text-green-800 p-4 rounded-lg mb-4 shadow">
+        <p class="text-lg font-medium">
+          Total Camps: <span class="font-bold">{{ overview.campingSpots.total }}</span> | 
+          Bookable: <span class="font-bold">{{ overview.campingSpots.bookable }}</span> | 
+          Non-Bookable: <span class="font-bold">{{ overview.campingSpots.nonBookable }}</span>
+        </p>
+      </div>
       <div class="overflow-x-auto bg-white shadow-md rounded-lg">
         <table class="table-auto border-collapse border border-gray-300 w-full text-left">
-          <thead class="bg-green-500 text-white">
+          <thead class="bg-green-500 text-white" v-if="camps.length > 0">
             <tr>
               <th class="border border-gray-300 px-4 py-2">Name</th>
               <th class="border border-gray-300 px-4 py-2">Description</th>
@@ -107,6 +127,11 @@
               <th class="border border-gray-300 px-9 py-2">Features</th>
             </tr>
           </thead>
+          <tbody v-else>
+            <tr>
+              <td colspan="100%" class="text-center text-gray-500 py-4">No camps available</td>
+            </tr>
+          </tbody>
           <tbody>
             <tr v-for="(camp, index) in camps" :key="index" class="hover:bg-green-100">
               <td class="border border-gray-300 px-4 py-2">{{ camp.name }}</td>
@@ -136,15 +161,25 @@
     <!-- Bookings Section -->
     <section class="mb-12">
       <h2 class="text-2xl font-semibold text-gray-700 mb-4">Bookings</h2>
+      <div class="bg-red-100 text-red-800 p-4 rounded-lg mb-4 shadow">
+        <p class="text-lg font-medium">
+          Total Bookings: <span class="font-bold">{{ overview.bookings.total }}</span> | Active: <span class="font-bold">{{ overview.bookings.active }}</span> | Cancelled: <span class="font-bold">{{ overview.bookings.cancelled }}</span>
+        </p>
+      </div>
       <div class="overflow-x-auto bg-white shadow-md rounded-lg">
         <table class="table-auto border-collapse border border-gray-300 w-full text-left">
-          <thead class="bg-red-500 text-white">
+          <thead class="bg-red-500 text-white" v-if="bookings.length > 0">
             <tr>
-              <th class="border border-gray-300 px-4 py-2" v-for="(key, keyIndex) in Object.keys(bookings[0] || {})" :key="keyIndex">
+              <th class="border border-gray-300 px-4 py-2" v-for="(key, keyIndex) in Object.keys(bookings[0])" :key="keyIndex">
                 {{ key }}
               </th>
             </tr>
           </thead>
+          <tbody v-else>
+            <tr>
+              <td colspan="100%" class="text-center text-gray-500 py-4">No bookings available</td>
+            </tr>
+          </tbody>
           <tbody>
             <tr v-for="(booking, index) in bookings" :key="index" class="hover:bg-red-100">
               <td class="border border-gray-300 px-4 py-2" v-for="(value, keyIndex) in Object.values(booking)" :key="keyIndex">

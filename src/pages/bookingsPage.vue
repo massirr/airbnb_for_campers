@@ -9,8 +9,6 @@
       mounted() {
         if (!this.isLoggedIn()) {
           localStorage.removeItem('token'); // Ensure token is removed if expired
-          this.$router.push('/signin'); // Redirect to sign-in page
-          return;
         }
         this.getCamps();
       },

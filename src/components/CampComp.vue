@@ -160,7 +160,7 @@ export default{
       <div class="flex flex-col lg:flex-row justify-between mb-4">
         <div class="text-orange-700 mb-3">
           <i class="pi pi-map-marker text-orange-700"></i>
-          {{ `${camp.city}, Bel` }}
+          {{ `${camp.city}, ${camp.country.substring(0, 3)}` }}
         </div>
 
         <div class="relative flex flex-col items-start">
