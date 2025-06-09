@@ -173,7 +173,7 @@
           class="w-full lg:w-3/4 bg-white rounded-xl shadow p-8 space-y-6 flex flex-col items-center justify-center"
         >
           <!-- Rest of your personal info section unchanged -->
-          <h1 class="text-2xl font-bold text-gray-800 mb-6 text-center">Personal information</h1>
+          <h1 class="text-4xl font-bold text-gray-800 mb-8 text-center">Personal Information</h1>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-gray-800 w-full max-w-2xl mx-auto">
             <div>
               <p class="font-semibold">First name</p>
