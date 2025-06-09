@@ -29,18 +29,6 @@
 
 ---
 
-## 📖 Table of Contents
-
-- [Overview](#overview)
-- [Getting Started](#getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Installation](#installation)
-  - [Usage](#usage)
-  - [Testing](#testing)
-- [⬆ Return](#)
-
----
-
 ## 🌄 Overview
 
 **Airbnb for Campers** is a comprehensive platform designed to connect campers with available sites, streamlining the camping experience for both users and developers.
@@ -109,7 +97,6 @@ npm test
 
 ---
 
-<a href="#">⬆ Return</a>
 
 </div>
 
