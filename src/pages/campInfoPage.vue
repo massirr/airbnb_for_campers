@@ -34,7 +34,7 @@
         <!-- Image Section -->
         <div class="w-full h-[50%] bg-gray-300 rounded-lg shadow-lg mb-4 flex items-center justify-center">
           <img v-if="camp.campingSpot_images && camp.campingSpot_images.length"
-           :src="camp.campingSpot_images[0].imageURL" 
+           :src="camp.campingSpot_images[0].imageURL"  
            alt="Camp Image" 
            class="w-full h-full object-cover rounded-lg" />
           <p v-else class="text-gray-500">Add an image here</p>

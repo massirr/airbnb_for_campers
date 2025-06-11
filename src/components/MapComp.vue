@@ -125,13 +125,13 @@ export default {
               .bindPopup(camp.name); // Display the camp name in the popup
             
             markers.push(marker);
-            bounds.extend([lat, lon]);
+            bounds.extend([lat, lon]); // Adjusting Map View by including each lat,lon point in the bounds
           });
           
           // Adjust map view to show all markers
           if (markers.length > 0) {
             this.map.invalidateSize(); // Force recalculation of map size
-            this.map.fitBounds(bounds, { padding: [50, 50] });
+            this.map.fitBounds(bounds, { padding: [50, 50] }); // from the bounds
           }
         })
         .catch((error) => {

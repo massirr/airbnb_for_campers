@@ -47,7 +47,7 @@
     <Account v-if="activePage == 'Account'"/>
     <Bookings v-if="activePage == 'Bookings'"/>
     <Camps v-if="activePage == 'Camps'" @setActivePage="setActivePage"/>
-    <CampInfo v-if="activePage == 'CampInfo'" @setActivePage="setActivePage" :camp="campData"/>
+    <CampInfo v-if="activePage == 'CampInfo'" @setActivePage="setActivePage" :camp="campData"/> <!--from the camps page to the camp info page-->
     <Create v-if="activePage == 'Create'" @setActivePage="setActivePage"/>
     <Home v-if="activePage == 'Home'" @setActivePage="setActivePage"/> <!--View all camps is only active on the home page-->
   </div>
