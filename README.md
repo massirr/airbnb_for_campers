@@ -92,7 +92,7 @@ npm start serve
 `airbnb_for_campers` uses the `{test_framework}` test framework. Run the test suite with:
 
 ```bash
-npm run serve
+npm test
 ```
 
 ---
