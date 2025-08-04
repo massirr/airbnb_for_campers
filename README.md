@@ -84,18 +84,5 @@ Run the project with:
 ```bash
 npm start serve
 ```
-
 ---
-
-### 🧪 Testing
-
-`airbnb_for_campers` uses the `{test_framework}` test framework. Run the test suite with:
-
-```bash
-npm test
-```
-
----
-
-
 </div>
